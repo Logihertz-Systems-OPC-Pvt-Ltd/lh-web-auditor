@@ -14,4 +14,3 @@ __all__ = [
     "render_batch_table",
     "render_scan_table",
 ]
-

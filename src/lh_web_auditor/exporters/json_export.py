@@ -52,4 +52,3 @@ def export_batch_json(batch: BatchResult, indent: int = 2) -> str:
         "batch": batch.to_dict(),
     }
     return json.dumps(payload, indent=indent)
-

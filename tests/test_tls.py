@@ -44,4 +44,3 @@ def test_http_target_redirects_to_https() -> None:
     assert len(findings) == 1
     assert findings[0].id == "SEC-TLS-HTTP-REDIRECT-SUCCESS"
     assert findings[0].severity == Severity.INFO
-

@@ -1,183 +1,130 @@
 # lh-web-auditor
 
-[![CI](https://github.com/logihertz/lh-web-auditor/actions/workflows/ci.yml/badge.svg)](https://github.com/logihertz/lh-web-auditor/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![Python: 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
+[![CI](https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor/actions/workflows/ci.yml/badge.svg)](https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor/actions/workflows/ci.yml)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+[![Security: bandit](https://img.shields.io/badge/security-bandit-yellow.svg)](https://github.com/PyCQA/bandit)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 
-An asynchronous defensive web configuration auditor developed by **Logihertz Systems OPC Pvt Ltd** that inspects HTTP response headers, cookie security attributes, CORS policies, and TLS settings for authorized domains.
+An enterprise asynchronous web configuration & security header auditor developed by **Logihertz Systems (OPC) Private Limited**.
+
+Asynchronous defensive web configuration auditor developed by Logihertz Systems (OPC) Private Limited that inspects HTTP response headers, cookie security attributes, CORS preflight policies, and TLS configurations for authorized domains.
 
 ---
 
-## Features
+## Key Features
 
-- **Asynchronous HTTP Engine**: Powered by `httpx` for high-throughput concurrent URL analysis.
-- **Security Header Auditing**: Evaluates security headers against modern defense-in-depth best practices:
-  - `Content-Security-Policy` (presence, unsafe directives, script-src wildcards, object-src, base-uri)
-  - `Strict-Transport-Security` (HSTS presence, minimum max-age, includeSubDomains, preload)
-  - `X-Frame-Options` (DENY, SAMEORIGIN, clickjacking protection)
-  - `X-Content-Type-Options` (MIME sniffing prevention via `nosniff`)
-  - `Referrer-Policy` (leakage prevention, secure fallbacks)
-  - `Permissions-Policy` (hardware API restriction: camera, geolocation, microphone, etc.)
-  - Information disclosure headers (`Server`, `X-Powered-By`, `X-AspNet-Version`)
-- **Cookie Security Attribute Inspection**: Checks all `Set-Cookie` directives for:
-  - `Secure` flag (prevent transmission over unencrypted connections)
-  - `HttpOnly` flag (mitigate client-side script theft / XSS impact)
-  - `SameSite` attribute (`Strict`, `Lax`, or `None` with `Secure`)
-  - Modern cookie prefix conformity (`__Host-` and `__Secure-`)
-- **CORS Misconfiguration Probing**: Safely issues preflight requests to detect:
-  - Insecure wildcard origin with credentials allowed (`*` with `Access-Control-Allow-Credentials: true`)
-  - Arbitrary origin reflection with credentials allowed
-  - Unrestricted origin reflection
-  - Insecure `null` origin trust
-- **TLS & Transport Security Verification**:
-  - Validates HTTPS scheme enforcement and HTTP-to-HTTPS redirection
-  - Inspects HTTP protocol versions (HTTP/1.1, HTTP/2)
-- **Numerical Security Scoring (0–100)**:
-  - Weighted penalty model (Critical: -25, High: -15, Medium: -8, Low: -4)
-  - Letter grading from `A+` down to `F`
-- **Flexible Export Formats**:
-  - `table`: Terminal tables with rich color coding and summary panels
-  - `json`: Machine-readable structured JSON report
-  - `sarif`: OASIS SARIF v2.1.0 report for direct integration into GitHub Advanced Security Code Scanning
+- **Asynchronous Concurrent Scanning**: Scans single endpoints or bulk URL inventories concurrently using asynchronous HTTP clients (`httpx`).
+- **Security Headers Evaluation**: Audits Content-Security-Policy (CSP), HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy.
+- **Cookie Security Attribute Auditing**: Inspects Set-Cookie headers for missing `Secure`, `HttpOnly`, and `SameSite` flags.
+- **CORS Policy Preflight Verification**: Tests Cross-Origin Resource Sharing behavior using safe preflight probes to detect wildcard and credential reflections.
+- **Objective Numerical Security Scoring**: Calculates a normalized 0-100 security score with weighted category penalties.
+- **Multi-Format Reporting**: Outputs colored terminal tables, structured JSON, and OASIS SARIF v2.1.0.
+
+---
+
+## Core Detection Rules
+
+| Rule ID | Severity | Description |
+|:---|:---:|:---|
+| `SEC-HDR-CSP-MISSING` | `HIGH` | Content-Security-Policy header is missing or unenforced |
+| `SEC-HDR-HSTS-MISSING` | `CRITICAL` | Strict-Transport-Security (HSTS) header is missing on HTTPS origin |
+| `SEC-HDR-XFO-MISSING` | `HIGH` | X-Frame-Options header missing (susceptible to clickjacking) |
+| `SEC-HDR-XCTO-MISSING` | `MEDIUM` | X-Content-Type-Options: nosniff header is missing |
+| `SEC-HDR-RP-UNSAFE` | `MEDIUM` | Referrer-Policy is missing or allows cleartext origin leakage |
+| `SEC-CK-NO-SECURE` | `HIGH` | Authentication cookie missing Secure flag over HTTPS transport |
+| `SEC-CK-NO-HTTPONLY` | `HIGH` | Session cookie missing HttpOnly flag (vulnerable to XSS theft) |
+| `SEC-CK-NO-SAMESITE` | `MEDIUM` | Session cookie missing SameSite attribute (CSRF risk) |
+| `SEC-CORS-WILDCARD` | `HIGH` | Overly permissive Access-Control-Allow-Origin: * on authenticated route |
+| `SEC-DISC-SERVER-VERSION` | `LOW` | Detailed server software banner or technology version disclosure |
 
 ---
 
 ## Installation
 
-Using `uv` (recommended):
+### Using `uv` (Recommended)
 
 ```bash
+# Clone the repository
+git clone https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor.git
+cd lh-web-auditor
+
+# Create virtual environment and install in editable mode with development tools
 uv venv
 source .venv/bin/activate
 uv pip install -e ".[dev]"
 ```
 
-Using standard `pip`:
+### Using standard `pip`
 
 ```bash
-pip install .
+pip install -e .
 ```
 
 ---
 
-## Usage
+## CLI Usage
 
-The CLI entrypoint is `lh-auditor`.
-
-### Single URL Scan
-
-Scan a single target URL and render results in the terminal:
+The primary executable entrypoint is `lh-auditor` (also accessible via `lh-auditor`).
 
 ```bash
+# Scan a live web endpoint for security headers and cookies
 lh-auditor scan https://example.com
-```
 
-Specify custom timeout, format, and output file:
+# Batch scan multiple target URLs concurrently
+lh-auditor batch urls.txt --concurrency 5 --format json
 
-```bash
-lh-auditor scan https://example.com --timeout 10 --format json --output report.json
-lh-auditor scan https://example.com --timeout 15 --format sarif --output results.sarif
-```
+# Export findings to OASIS SARIF v2.1.0
+lh-auditor scan https://example.com --format sarif --output web-audit.sarif
 
-### Batch URL Scan
-
-Concurrently audit multiple domains from a text file:
-
-```bash
-lh-auditor batch urls.txt --concurrency 5 --format json --output batch-report.json
-```
-
-Where `urls.txt` contains one URL per line:
-```text
-https://example.com
-https://api.example.com
-http://legacy.example.com
+# Custom request timeout and redirect policy
+lh-auditor scan https://example.com --timeout 15
 ```
 
 ---
 
-## CLI Reference
+## Exit Codes
 
-### `lh-auditor scan`
-```
-Usage: lh-auditor scan [OPTIONS] URL
-
-Arguments:
-  URL  Target URL to scan (e.g. https://example.com)  [required]
-
-Options:
-  -t, --timeout FLOAT         Connection and read timeout in seconds  [default: 10.0]
-  -f, --format [table|json|sarif] Output format  [default: table]
-  -o, --output PATH           File path to write output  [default: None]
-  --user-agent TEXT           Custom User-Agent header  [default: lh-web-auditor/0.1.0]
-  --follow-redirects / --no-follow-redirects
-                              Follow HTTP redirects  [default: True]
-  --verify-ssl / --no-verify-ssl
-                              Verify SSL/TLS certificates  [default: True]
-  --help                      Show this message and exit.
-```
-
-### `lh-auditor batch`
-```
-Usage: lh-auditor batch [OPTIONS] FILE
-
-Arguments:
-  FILE  Path to text file containing URLs to audit (one per line)  [required]
-
-Options:
-  -c, --concurrency INTEGER   Maximum concurrent scan workers  [default: 5]
-  -t, --timeout FLOAT         Connection and read timeout in seconds  [default: 10.0]
-  -f, --format [table|json|sarif] Output format  [default: json]
-  -o, --output PATH           File path to write output  [default: None]
-  --user-agent TEXT           Custom User-Agent header  [default: lh-web-auditor/0.1.0]
-  --follow-redirects / --no-follow-redirects
-                              Follow HTTP redirects  [default: True]
-  --verify-ssl / --no-verify-ssl
-                              Verify SSL/TLS certificates  [default: True]
-  --help                      Show this message and exit.
-```
+| Exit Code | Meaning |
+|:---:|:---|
+| `0` | All audits and security checks passed; no policy violations detected. |
+| `1` | One or more security findings, policy violations, or compliance failures detected. |
+| `2` | Execution error (invalid arguments, missing input files, malformed syntax). |
 
 ---
 
-## Scoring Methodology
+## Documentation
 
-The auditor assesses defensive postures starting from **100 points**:
+Comprehensive enterprise documentation is available in the [`docs/`](docs/) directory and repository root:
 
-| Severity | Deduction | Description |
-| -------- | --------- | ----------- |
-| **CRITICAL** | -25 points | Severe exposure (e.g., CORS wildcard / origin reflection with credentials allowed). |
-| **HIGH** | -15 points | Missing fundamental protections (missing CSP, missing HSTS, missing Secure on cookies over HTTPS). |
-| **MEDIUM** | -8 points | Configuration weakness (missing HttpOnly, missing SameSite, permissive Referrer-Policy, weak CSP). |
-| **LOW** | -4 points | Informational hardening (missing Permissions-Policy, missing subDomains/preload on HSTS). |
-| **INFO** | 0 points | Informative findings (server banner disclosures). |
-
-Scores are mapped to security grades:
-- **A+**: 95 – 100
-- **A**: 85 – 94
-- **B**: 70 – 84
-- **C**: 50 – 69
-- **D**: 30 – 49
-- **F**: 0 – 29
-
----
+- **[Architecture & Design](docs/ARCHITECTURE.md)**: Zero-daemon clean-room architecture, module responsibilities, domain models, and 0–100 risk score calculation formula.
+- **[Security Rules Reference](docs/RULES.md)**: Exhaustive catalog of all 10 detection rules with threat models, severities, and remediation guides.
+- **[CLI Usage Guide](docs/USAGE.md)**: Complete command-line manual, flags, exit codes, CI/CD SARIF upload workflows, and JSON pipelines.
+- **[Test & Verification Declaration](docs/TESTING.md)**: Audited test inventory, AST security verification, SAST audit results, and per-module code coverage metrics.
+- **[Changelog](CHANGELOG.md)**: Semantic release history and detailed changelog entries.
+- **[Contributing Guidelines](CONTRIBUTING.md)**: Developer setup, coding standards, line length, typing, and PR requirements.
+- **[Security Policy](SECURITY.md)**: Vulnerability disclosure procedure, reporting email, and 48-hour response SLA.
+- **[Legal Notice & Attributions](NOTICE)**: Apache-2.0 Section 4 legal notice, trademark reservations, and third-party software attributions.
 
 ## Development & Testing
 
-Run linting and static analysis:
-```bash
-ruff check .
-bandit -r src/
-```
+Run all project linters, security audits, and test suites:
 
-Run test suite:
 ```bash
-pytest -v
+# Run code style and lint checks
+uv run ruff check src/ tests/
+
+# Run static application security testing (SAST)
+uv run bandit -r src/
+
+# Run unit and integration tests with coverage
+uv run pytest
 ```
 
 ---
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-Copyright (c) 2026 Logihertz Systems OPC Pvt Ltd.
+This project is licensed under the Apache-2.0 License - see the [LICENSE](LICENSE) file for details.
 
+Developed with precision by **Logihertz Systems (OPC) Private Limited**.

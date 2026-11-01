@@ -151,4 +151,3 @@ def test_sarif_batch_export() -> None:
     doc = json.loads(sarif_str)
     assert doc["version"] == "2.1.0"
     assert len(doc["runs"][0]["results"]) == 1
-

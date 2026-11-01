@@ -102,4 +102,3 @@ def test_score_floor_zero() -> None:
     score, grade = calculate_score(findings)
     assert score == 0
     assert grade == "F"
-

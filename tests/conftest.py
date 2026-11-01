@@ -36,4 +36,3 @@ def secure_headers() -> dict[str, str]:
         "referrer-policy": "strict-origin-when-cross-origin",
         "permissions-policy": "geolocation=(), microphone=(), camera=()",
     }
-

@@ -83,4 +83,3 @@ def test_cors_no_headers_or_unrelated_origin() -> None:
     assert probe.is_wildcard is False
     assert probe.is_vulnerable is False
     assert len(findings) == 0
-

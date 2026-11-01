@@ -26,7 +26,7 @@ def _build_rule_definition(finding: Finding) -> dict[str, Any]:
     help_uri = (
         f"https://cwe.mitre.org/data/definitions/{finding.cwe_id.replace('CWE-', '')}.html"
         if finding.cwe_id
-        else "https://github.com/logihertz/lh-web-auditor"
+        else "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor"
     )
 
     sec_sev = "8.0" if finding.severity in (Severity.CRITICAL, Severity.HIGH) else "5.0"
@@ -111,7 +111,7 @@ def export_results_sarif(results: Sequence[ScanResult], indent: int = 2) -> str:
                         "name": "lh-web-auditor",
                         "organization": "Logihertz Systems OPC Pvt Ltd",
                         "semanticVersion": "0.1.0",
-                        "informationUri": "https://github.com/logihertz/lh-web-auditor",
+                        "informationUri": "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor",
                         "rules": list(rules_by_id.values()),
                     }
                 },

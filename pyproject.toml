@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Asynchronous defensive web configuration auditor developed by Logihertz Systems OPC Pvt Ltd"
 readme = "README.md"
 requires-python = ">=3.11"
-license = "MIT"
+license = "Apache-2.0"
 authors = [
     { name = "Logihertz Systems OPC Pvt Ltd", email = "info@logihertz.com" }
 ]
@@ -38,6 +38,13 @@ dev = [
     "ruff>=0.4.0",
     "bandit>=1.7.0",
 ]
+
+
+[project.urls]
+Homepage = "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor"
+Repository = "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor"
+Documentation = "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor#documentation"
+Issues = "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor/issues"
 
 [project.scripts]
 lh-auditor = "lh_web_auditor.cli:app"
