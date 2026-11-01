@@ -1,3 +1,13 @@
+# ==============================================================================
+# Product:       lh-web-auditor (lh-web)
+# Module:        src.lh_web_auditor.scanner
+# Role:          Security Analysis & Rule Evaluation Engine
+# Organization:  Logihertz Systems (OPC) Private Limited (logihertzsystems)
+# Creator:       Sameer Tawade (Creator, Founder, Director & Whole and Sole Developer)
+# Contact:       ops@logihertz.com | https://logihertz.com/
+# License:       Apache License 2.0 (SPDX-License-Identifier: Apache-2.0)
+# ==============================================================================
+
 """Asynchronous web configuration auditing engine using httpx."""
 
 from __future__ import annotations

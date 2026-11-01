@@ -1,3 +1,13 @@
+# ==============================================================================
+# Product:       lh-web-auditor (lh-web)
+# Module:        src.lh_web_auditor.exporters.table
+# Role:          Core Security Engine Component
+# Organization:  Logihertz Systems (OPC) Private Limited (logihertzsystems)
+# Creator:       Sameer Tawade (Creator, Founder, Director & Whole and Sole Developer)
+# Contact:       ops@logihertz.com | https://logihertz.com/
+# License:       Apache License 2.0 (SPDX-License-Identifier: Apache-2.0)
+# ==============================================================================
+
 """Terminal table and summary rendering using Rich."""
 
 from __future__ import annotations

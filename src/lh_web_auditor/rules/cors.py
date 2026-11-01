@@ -1,3 +1,13 @@
+# ==============================================================================
+# Product:       lh-web-auditor (lh-web)
+# Module:        src.lh_web_auditor.rules.cors
+# Role:          Core Security Engine Component
+# Organization:  Logihertz Systems (OPC) Private Limited (logihertzsystems)
+# Creator:       Sameer Tawade (Creator, Founder, Director & Whole and Sole Developer)
+# Contact:       ops@logihertz.com | https://logihertz.com/
+# License:       Apache License 2.0 (SPDX-License-Identifier: Apache-2.0)
+# ==============================================================================
+
 """Cross-Origin Resource Sharing (CORS) policy and preflight evaluation rules."""
 
 from __future__ import annotations

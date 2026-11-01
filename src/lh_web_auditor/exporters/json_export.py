@@ -1,3 +1,13 @@
+# ==============================================================================
+# Product:       lh-web-auditor (lh-web)
+# Module:        src.lh_web_auditor.exporters.json_export
+# Role:          Core Security Engine Component
+# Organization:  Logihertz Systems (OPC) Private Limited (logihertzsystems)
+# Creator:       Sameer Tawade (Creator, Founder, Director & Whole and Sole Developer)
+# Contact:       ops@logihertz.com | https://logihertz.com/
+# License:       Apache License 2.0 (SPDX-License-Identifier: Apache-2.0)
+# ==============================================================================
+
 """JSON report serialization for scan and batch results."""
 
 from __future__ import annotations
@@ -52,4 +62,3 @@ def export_batch_json(batch: BatchResult, indent: int = 2) -> str:
         "batch": batch.to_dict(),
     }
     return json.dumps(payload, indent=indent)
-

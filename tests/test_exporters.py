@@ -1,3 +1,13 @@
+# ==============================================================================
+# Product:       lh-web-auditor (lh-web)
+# Module:        tests.test_exporters
+# Role:          Test Suite & Rule Verification
+# Organization:  Logihertz Systems (OPC) Private Limited (logihertzsystems)
+# Creator:       Sameer Tawade (Creator, Founder, Director & Whole and Sole Developer)
+# Contact:       ops@logihertz.com | https://logihertz.com/
+# License:       Apache License 2.0 (SPDX-License-Identifier: Apache-2.0)
+# ==============================================================================
+
 """Tests for result exporters (table, JSON, SARIF)."""
 
 from __future__ import annotations
@@ -151,4 +161,3 @@ def test_sarif_batch_export() -> None:
     doc = json.loads(sarif_str)
     assert doc["version"] == "2.1.0"
     assert len(doc["runs"][0]["results"]) == 1
-

@@ -1,3 +1,13 @@
+# ==============================================================================
+# Product:       lh-web-auditor (lh-web)
+# Module:        src.lh_web_auditor.cli
+# Role:          CLI Interface & Execution Controller
+# Organization:  Logihertz Systems (OPC) Private Limited (logihertzsystems)
+# Creator:       Sameer Tawade (Creator, Founder, Director & Whole and Sole Developer)
+# Contact:       ops@logihertz.com | https://logihertz.com/
+# License:       Apache License 2.0 (SPDX-License-Identifier: Apache-2.0)
+# ==============================================================================
+
 """Command-line interface (CLI) for lh-web-auditor."""
 
 from __future__ import annotations
@@ -14,6 +24,11 @@ from lh_web_auditor.exporters.sarif import export_batch_sarif, export_scan_sarif
 from lh_web_auditor.exporters.table import render_batch_table, render_scan_table
 from lh_web_auditor.models import Format
 from lh_web_auditor.scanner import WebAuditor
+
+# --- Exit Code Semantics ---
+# Exit Code 0: Audit passed successfully with zero policy violations.
+# Exit Code 1: Security findings detected meeting or exceeding failure threshold (--fail-on).
+# Exit Code 2: Command execution error, invalid arguments, or unparseable input target.
 
 app = typer.Typer(
     name="lh-auditor",

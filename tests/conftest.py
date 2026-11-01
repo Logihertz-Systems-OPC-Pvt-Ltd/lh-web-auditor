@@ -1,3 +1,13 @@
+# ==============================================================================
+# Product:       lh-web-auditor (lh-web)
+# Module:        tests.conftest
+# Role:          Test Suite & Rule Verification
+# Organization:  Logihertz Systems (OPC) Private Limited (logihertzsystems)
+# Creator:       Sameer Tawade (Creator, Founder, Director & Whole and Sole Developer)
+# Contact:       ops@logihertz.com | https://logihertz.com/
+# License:       Apache License 2.0 (SPDX-License-Identifier: Apache-2.0)
+# ==============================================================================
+
 """Shared fixtures and mocks for unit tests."""
 
 from __future__ import annotations
@@ -36,4 +46,3 @@ def secure_headers() -> dict[str, str]:
         "referrer-policy": "strict-origin-when-cross-origin",
         "permissions-policy": "geolocation=(), microphone=(), camera=()",
     }
-

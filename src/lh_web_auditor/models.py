@@ -1,3 +1,13 @@
+# ==============================================================================
+# Product:       lh-web-auditor (lh-web)
+# Module:        src.lh_web_auditor.models
+# Role:          Data Models & Rule Definitions
+# Organization:  Logihertz Systems (OPC) Private Limited (logihertzsystems)
+# Creator:       Sameer Tawade (Creator, Founder, Director & Whole and Sole Developer)
+# Contact:       ops@logihertz.com | https://logihertz.com/
+# License:       Apache License 2.0 (SPDX-License-Identifier: Apache-2.0)
+# ==============================================================================
+
 """Domain models and data definitions for lh-web-auditor."""
 
 from __future__ import annotations
@@ -8,6 +18,9 @@ from typing import Any
 
 
 class Severity(StrEnum):
+    # --- Severity Rank & Weighting Structure ---
+    # Defines discrete security tiers for findings and threshold gating.
+    # Higher ordinal rankings enforce stricter build break / fail-on gates.
     """Vulnerability and finding severity levels."""
 
     CRITICAL = "CRITICAL"

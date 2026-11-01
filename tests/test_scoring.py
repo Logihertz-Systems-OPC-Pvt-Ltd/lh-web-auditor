@@ -1,3 +1,13 @@
+# ==============================================================================
+# Product:       lh-web-auditor (lh-web)
+# Module:        tests.test_scoring
+# Role:          Test Suite & Rule Verification
+# Organization:  Logihertz Systems (OPC) Private Limited (logihertzsystems)
+# Creator:       Sameer Tawade (Creator, Founder, Director & Whole and Sole Developer)
+# Contact:       ops@logihertz.com | https://logihertz.com/
+# License:       Apache License 2.0 (SPDX-License-Identifier: Apache-2.0)
+# ==============================================================================
+
 """Tests for scoring and grading logic."""
 
 from __future__ import annotations
@@ -102,4 +112,3 @@ def test_score_floor_zero() -> None:
     score, grade = calculate_score(findings)
     assert score == 0
     assert grade == "F"
-

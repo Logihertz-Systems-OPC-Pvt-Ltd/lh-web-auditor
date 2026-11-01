@@ -1,3 +1,13 @@
+# ==============================================================================
+# Product:       lh-web-auditor (lh-web)
+# Module:        tests.test_cors
+# Role:          Test Suite & Rule Verification
+# Organization:  Logihertz Systems (OPC) Private Limited (logihertzsystems)
+# Creator:       Sameer Tawade (Creator, Founder, Director & Whole and Sole Developer)
+# Contact:       ops@logihertz.com | https://logihertz.com/
+# License:       Apache License 2.0 (SPDX-License-Identifier: Apache-2.0)
+# ==============================================================================
+
 """Tests for CORS policy and preflight evaluation rules."""
 
 from __future__ import annotations
@@ -83,4 +93,3 @@ def test_cors_no_headers_or_unrelated_origin() -> None:
     assert probe.is_wildcard is False
     assert probe.is_vulnerable is False
     assert len(findings) == 0
-

@@ -5,14 +5,26 @@ build-backend = "hatchling.build"
 [project]
 name = "lh-web-auditor"
 version = "0.1.0"
-description = "Asynchronous defensive web configuration auditor developed by Logihertz Systems OPC Pvt Ltd"
+description = "Evaluates live URLs or captured HTTP response header manifests for missing HSTS, permissive Content-Security-Policy (unsafe-inline/unsafe-eval), wildcard CORS with credentials, referrer leaks, and server version banners."
 readme = "README.md"
 requires-python = ">=3.11"
-license = "MIT"
+license = "Apache-2.0"
 authors = [
-    { name = "Logihertz Systems OPC Pvt Ltd", email = "info@logihertz.com" }
+    { name = "logihertzsystems", email = "ops@logihertz.com" },
+    { name = "Sameer Tawade (Creator, Founder, Director & Sole Developer)", email = "ops@logihertz.com" },
 ]
-keywords = ["security", "audit", "headers", "cookies", "cors", "tls", "sarif"]
+maintainers = [
+    { name = "Logihertz Systems (OPC) Private Limited", email = "ops@logihertz.com" },
+]
+keywords = [
+    "http-headers",
+    "csp-auditor",
+    "cors-security",
+    "web-security",
+    "hsts",
+    "sarif",
+    "logihertz",
+]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Information Technology",
@@ -38,6 +50,13 @@ dev = [
     "ruff>=0.4.0",
     "bandit>=1.7.0",
 ]
+
+
+[project.urls]
+Homepage = "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor"
+Repository = "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor"
+Documentation = "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor#documentation"
+Issues = "https://github.com/Logihertz-Systems-OPC-Pvt-Ltd/lh-web-auditor/issues"
 
 [project.scripts]
 lh-auditor = "lh_web_auditor.cli:app"
